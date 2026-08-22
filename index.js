@@ -1,0 +1,28 @@
+const express = require('express');
+const app = express();
+app.use(express.json());
+app.use(express.static('public'));
+
+let sugerencias = [];
+
+// recibir una sugerencia nueva
+app.post('/api/sugerencias', (req, res) => {
+  const { nombre, categoria, mensaje } = req.body;
+  sugerencias.push({ nombre, categoria, mensaje, fecha: new Date() });
+  res.status(201).json({ ok: true });
+});
+
+// listar las sugerencias (panel admin)
+app.get('/api/sugerencias', (req, res) => {
+  res.json(sugerencias);
+});
+
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Ruta no encontrada',
+  });
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Buzón activo');
+});

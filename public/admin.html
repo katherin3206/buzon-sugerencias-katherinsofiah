@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Panel de administración</title>
+  </head>
+  <body>
+    <h1>Sugerencias recibidas</h1>
+    <div id="lista"></div>
+
+    <script>
+      async function cargarSugerencias() {
+        const respuesta = await fetch('/api/sugerencias');
+        const sugerencias = await respuesta.json();
+        const contenedor = document.getElementById('lista');
+
+        sugerencias.forEach((s) => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+          <p><strong>${s.categoria}</strong></p>
+          <p>${s.mensaje}</p>
+          <small>${s.nombre || 'Anónimo'}</small>
+        `;
+          contenedor.appendChild(div);
+        });
+      }
+      cargarSugerencias();
+app.use((req, res) => {
+res.status(404).json({ error: 'Ruta no encontrada' });
+});
+    </script>
+  </body>
+</html>

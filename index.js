@@ -17,6 +17,16 @@ app.get('/api/sugerencias', (req, res) => {
   res.json(sugerencias);
 });
 
+app.get('/api/sugerencias/:categoria', (req, res) => {
+  const categoria = req.params.categoria;
+
+  const filtradas = sugerencias.filter(
+    sugerencia => sugerencia.categoria === categoria
+  );
+
+  res.json(filtradas);
+});
+
 app.use((req, res) => {
   res.status(404).json({
     error: 'Ruta no encontrada',

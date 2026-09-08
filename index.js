@@ -8,6 +8,11 @@ let sugerencias = [];
 // recibir una sugerencia nueva
 app.post('/api/sugerencias', (req, res) => {
   const { nombre, categoria, mensaje } = req.body;
+  if (!mensaje || mensaje.trim() === '') {
+  return res.status(400).json({
+    error: 'El campo mensaje es obligatorio'
+  });
+}
   sugerencias.push({ nombre, categoria, mensaje, fecha: new Date() });
   res.status(201).json({ ok: true });
 });
